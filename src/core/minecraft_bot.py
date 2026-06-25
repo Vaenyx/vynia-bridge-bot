@@ -4,9 +4,12 @@ import json
 import time
 import traceback
 import javascript
+import re
 
 from core.commands import handle_command
 from helpers.ctx import CommandContext
+
+rank_regex = re.compile(r"^\[[^\]]+\]\s*")
 
 
 class MinecraftBotManager:
@@ -144,14 +147,17 @@ class MinecraftBotManager:
         @javascript.On(self.bot, "messagestr")
         def chat(message, _, raw_message, *args):
             prefix = "Guild > "
-            if message.startswith(f"{prefix}{self.bot.username}"):
-                return
 
-            elif message.startswith(prefix):
+            if message.startswith(prefix):
+
                 sender, _, content = message.removeprefix(
                     prefix).partition(": ")
 
-                username = sender.split()[-1]
+                sender = rank_regex.sub("", sender, count=1)
+                username = sender.strip()
+
+                if username == self.bot.username:
+                    return
 
                 async def reply(text: str):
                     await self.chat(f"/t {username} {text}"[:256])
