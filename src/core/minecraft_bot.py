@@ -160,6 +160,8 @@ class MinecraftBotManager:
                     author=username,
                     platform="minecraft",
                     reply=reply,
+                    discord=self.client,
+                    minecraft=self
                 )
 
                 future = asyncio.run_coroutine_threadsafe(

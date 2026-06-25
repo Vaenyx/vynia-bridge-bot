@@ -69,6 +69,8 @@ class DiscordBridgeBot(commands.Bot):
             author=message.author.display_name,
             platform="discord",
             reply=message.channel.send,
+            discord=self,
+            minecraft=self.mineflayer_bot
         )
 
         if await handle_command(ctx, message.content):

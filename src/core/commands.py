@@ -3,6 +3,7 @@ from helpers.ctx import CommandContext
 
 from commands.meow import meow
 from commands.mirror import mirror
+from commands.rickroll import rickroll
 
 
 async def handle_command(
@@ -31,4 +32,5 @@ async def handle_command(
 CommandFn = Callable[["CommandContext", str], Awaitable[None]]
 
 
-COMMANDS: dict[str, CommandFn] = {"meow": meow, "mirror": mirror}
+COMMANDS: dict[str, CommandFn] = {
+    "meow": meow, "mirror": mirror, "rickroll": rickroll}
