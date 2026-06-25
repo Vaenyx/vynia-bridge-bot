@@ -1,0 +1,15 @@
+services:
+  bridge-bot:
+    image: "hypixel-bridge-bot:latest"
+    build:
+      context: ./src/
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: hypixel-bridge-bot
+    volumes:
+      - .minecraft:/root/.minecraft
+    environment:
+      - BRIDGE_ACCOUNT_EMAIL
+      - BRIDGE_DISCORD_TOKEN
+      - BRIDGE_DISCORD_CHANNEL
+

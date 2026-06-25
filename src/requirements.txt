@@ -1,0 +1,3 @@
+discord.py~=2.6.4
+javascript~=1!1.2.6
+requests~=2.32.5
