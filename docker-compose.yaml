@@ -13,3 +13,6 @@ services:
       - BRIDGE_DISCORD_TOKEN
       - BRIDGE_DISCORD_CHANNEL
 
+      # For commands
+      - URCHIN_API_KEY
+      - HYPIXEL_API_KEY

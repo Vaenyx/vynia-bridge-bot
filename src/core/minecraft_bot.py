@@ -8,6 +8,7 @@ import re
 
 from core.commands import handle_command
 from helpers.ctx import CommandContext
+from helpers.random_sequence import random_sequence
 
 rank_regex = re.compile(r"^\[[^\]]+\]\s*")
 
@@ -33,8 +34,12 @@ class MinecraftBotManager:
         return self._starting
 
     async def chat(self, message):
+        message = message.replace("/l", "/ l").replace("/L", "/ L")
         print(message)
         self.bot.chat(message)
+        # random message to prevent that error yk
+        for i in range(3):
+            self.bot.chat(f"\t {self.bot.username} {random_sequence(120)}")
 
     def stop(self, restart: bool = True):
         print("Minecraft > Stopping bot...")
