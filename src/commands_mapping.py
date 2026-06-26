@@ -4,7 +4,7 @@ from commands.meow import meow
 from commands.mirror import mirror
 from commands.rickroll import rickroll
 
-from commands.bedwars.bedwars_all_time import bw
+from commands.bedwars.bedwars_all_time import bw, tags
 from commands.bedwars.bedwars_period import bw_daily, bw_weekly, bw_monthly
 
 
@@ -15,6 +15,7 @@ COMMANDS: dict[str, CommandFn] = {
     "mirror": mirror,
     "rickroll": rickroll,
     "bw": bw,
+    "tags": tags,
     "bw-daily": bw_daily,
     "bw-weekly": bw_weekly,
     "bw-monthly": bw_monthly

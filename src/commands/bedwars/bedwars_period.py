@@ -1,37 +1,10 @@
 from typing import Any
-import os
-import requests
 
 from core.command_context import CommandContext, get_name
 
+from helpers.apis.urchin import urchin_get
 from helpers.hypixel import stars_from_xp
 from helpers.formatting import _fmt
-
-URCHIN_BASE_URL = "https://api.urchin.gg/v3"
-
-URCHIN_API_KEY = os.getenv("URCHIN_API_KEY")
-if not URCHIN_API_KEY:
-    raise RuntimeError("URCHIN_API_KEY was not provided")
-
-URCHIN_HEADERS = {
-    "X-API-Key": URCHIN_API_KEY,
-}
-
-
-def _urchin_get(endpoint: str, player: str) -> dict[str, Any]:
-    response = requests.get(
-        f"{URCHIN_BASE_URL}{endpoint}",
-        headers=URCHIN_HEADERS,
-        params={"player": player},
-        timeout=10,
-    )
-
-    data = response.json()
-
-    if response.status_code != 200:
-        raise RuntimeError(data.get("error", response.text))
-
-    return data
 
 
 def _bw_stat(stats: dict[str, Any], key: str, default=0):
@@ -44,15 +17,15 @@ def _bw_stat(stats: dict[str, Any], key: str, default=0):
 
 
 def get_bw_daily(player: str) -> dict[str, Any]:
-    return _urchin_get("/player/sessions/daily", player)
+    return urchin_get("/player/sessions/daily", player)
 
 
 def get_bw_weekly(player: str) -> dict[str, Any]:
-    return _urchin_get("/player/sessions/weekly", player)
+    return urchin_get("/player/sessions/weekly", player)
 
 
 def get_bw_monthly(player: str) -> dict[str, Any]:
-    return _urchin_get("/player/sessions/monthly", player)
+    return urchin_get("/player/sessions/monthly", player)
 
 
 def _format_stats(title: str, player: str, stats: dict[str, Any]) -> str:
