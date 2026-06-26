@@ -21,6 +21,13 @@ See the deployment guide:
 - [Deployment Guide](docs/deployment.md)
 
 
+## Custom Commands
+
+See the custom commands guide:
+
+- [Custom Commands Guide](docs/custom_commands.md)
+
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
