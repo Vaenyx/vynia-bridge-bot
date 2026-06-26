@@ -6,11 +6,11 @@ from discord.ext import commands
 
 from core.config import DiscordConfig
 from core.minecraft_bot import MinecraftBotManager
-from core.commands import handle_command
+from core.commands_handler import handle_command
+from core.command_context import CommandContext
 
 from helpers.censor import censor
 from helpers.guild_keywords import GUILD_KEYWORDS
-from helpers.ctx import CommandContext
 
 
 class DiscordBridgeBot(commands.Bot):

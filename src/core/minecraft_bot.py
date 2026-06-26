@@ -6,8 +6,8 @@ import traceback
 import javascript
 import re
 
-from core.commands import handle_command
-from helpers.ctx import CommandContext
+from core.commands_handler import handle_command
+from core.command_context import CommandContext
 from helpers.random_sequence import random_sequence
 
 rank_regex = re.compile(r"^\[[^\]]+\]\s*")

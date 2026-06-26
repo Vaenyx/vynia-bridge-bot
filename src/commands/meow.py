@@ -1,4 +1,4 @@
-from helpers.ctx import CommandContext
+from core.command_context import CommandContext
 from typing import Any
 
 

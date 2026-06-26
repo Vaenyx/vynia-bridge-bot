@@ -1,10 +1,8 @@
 from typing import Any
 import os
-
 import requests
 
-from helpers.command_helper_funcs import get_name
-from helpers.ctx import CommandContext
+from core.command_context import CommandContext, get_name
 
 from helpers.hypixel import stars_from_xp
 from helpers.formatting import _fmt

@@ -1,7 +1,5 @@
-from helpers.ctx import CommandContext
+from core.command_context import CommandContext, get_name
 from typing import Any
-
-from helpers.command_helper_funcs import get_name
 
 
 async def rickroll(ctx: CommandContext, message: str) -> Any:
