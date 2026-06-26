@@ -16,7 +16,7 @@ COMMANDS: dict[str, CommandFn] = {
     "rickroll": rickroll,
     "bw": bw,
     "tags": tags,
-    "bw-daily": bw_daily,
-    "bw-weekly": bw_weekly,
-    "bw-monthly": bw_monthly
+    "daily": bw_daily,
+    "weekly": bw_weekly,
+    "monthly": bw_monthly
 }
