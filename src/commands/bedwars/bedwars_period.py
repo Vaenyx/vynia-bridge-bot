@@ -28,6 +28,10 @@ def get_bw_monthly(player: str) -> dict[str, Any]:
     return urchin_get("/player/sessions/monthly", player)
 
 
+def get_bw_yearly(player: str) -> dict[str, Any]:
+    return urchin_get("/player/sessions/yearly", player)
+
+
 def _format_stats(title: str, player: str, stats: dict[str, Any]) -> str:
     wins = _bw_stat(stats, "wins_bedwars")
     losses = _bw_stat(stats, "losses_bedwars")
@@ -88,5 +92,15 @@ async def bw_monthly(ctx: CommandContext, message: str) -> Any:
     try:
         stats = get_bw_monthly(name)
         return await ctx.reply(_format_stats("Monthly", name, stats))
+    except Exception as e:
+        return await ctx.reply(f"Error: {e}")
+
+
+async def bw_yearly(ctx: CommandContext, message: str) -> Any:
+    name = get_name(ctx, message)
+
+    try:
+        stats = get_bw_yearly(name)
+        return await ctx.reply(_format_stats("Yearly", name, stats))
     except Exception as e:
         return await ctx.reply(f"Error: {e}")
