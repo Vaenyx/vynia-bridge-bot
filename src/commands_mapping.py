@@ -1,5 +1,8 @@
 from collections.abc import Awaitable, Callable
 
+from commands.help import help
+from commands.commands import commands
+
 from commands.meow import meow
 from commands.mirror import mirror
 from commands.rickroll import rickroll
@@ -16,6 +19,8 @@ from commands.bedwars.bedwars_period import bw_daily, bw_weekly, bw_monthly, bw_
 CommandFn = Callable[["CommandContext", str], Awaitable[None]]
 
 COMMANDS: dict[str, CommandFn] = {
+    "help": help,
+    "commands": commands,
     "meow": meow,
     "mirror": mirror,
     "rickroll": rickroll,
