@@ -2,7 +2,7 @@ from typing import Any
 
 from core.command_context import CommandContext, get_name
 
-from helpers.apis.urchin import urchin_get
+from apis.urchin import urchin_get
 from helpers.hypixel import stars_from_xp
 from helpers.formatting import _fmt
 
