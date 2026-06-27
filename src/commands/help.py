@@ -7,7 +7,7 @@ async def help(ctx: CommandContext, message: str) -> Any:
         "Vynia Bridge Bot » \n"
         "Creator @perished_memories | \n"
         "Source Code at Github Vaenyx/vynia-bridge-bot | \n"
-        "Commands list !commandso\n"
+        "Commands list !commands\n"
     )
 
     return await ctx.reply(help_msg)
