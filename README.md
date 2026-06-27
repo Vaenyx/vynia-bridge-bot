@@ -31,3 +31,10 @@ See the custom commands guide:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+
+## Disclaimer
+
+This bot is not affiliated with or endorsed by Hypixel.
+
+Use it at your own risk and ensure that you comply with Hypixel's Terms of Service. The bot follows Hypixel's API rules by among other things caching api calls in order to minimize the risk of account restrictions.
