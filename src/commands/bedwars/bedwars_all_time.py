@@ -8,12 +8,12 @@ from helpers.hypixel import stars_from_xp
 from helpers.formatting import _fmt
 
 
-def get_bw_overall(player: str) -> dict[str, Any]:
-    return hypixel_get(player)
+async def get_bw_overall(player: str) -> dict[str, Any]:
+    return await hypixel_get(player)
 
 
-def get_player_tags(player: str) -> dict[str, Any]:
-    return urchin_get("/player/tags", player)
+async def get_player_tags(player: str) -> dict[str, Any]:
+    return await urchin_get("/player/tags", player)
 
 
 def _format_tags(data: dict[str, Any]) -> str:
@@ -43,7 +43,7 @@ async def tags(ctx: CommandContext, message: str) -> Any:
     name = get_name(ctx, message)
 
     try:
-        tag_data = get_player_tags(name)
+        tag_data = await get_player_tags(name)
         tags_text = _format_tags(tag_data)
 
         return await ctx.reply(
@@ -58,7 +58,7 @@ async def bw(ctx: CommandContext, message: str) -> Any:
     name = get_name(ctx, message)
 
     try:
-        stats = get_bw_overall(name)
+        stats = await get_bw_overall(name)
 
         bw = (
             stats.get("player", {})
@@ -88,7 +88,7 @@ async def bw(ctx: CommandContext, message: str) -> Any:
         bblr = beds_broken / max(1, beds_lost)
         kdr = kills / max(1, deaths)
 
-        tag_data = get_player_tags(name)
+        tag_data = await get_player_tags(name)
         tags_text = _format_tags(tag_data)
 
         return await ctx.reply(

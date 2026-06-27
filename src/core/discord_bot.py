@@ -11,6 +11,7 @@ from core.command_context import CommandContext
 
 from helpers.censor import censor
 from helpers.guild_keywords import GUILD_KEYWORDS
+from helpers.redis_cache import close_redis, init_redis
 
 
 class DiscordBridgeBot(commands.Bot):
@@ -26,6 +27,10 @@ class DiscordBridgeBot(commands.Bot):
         self.owner_id = DiscordConfig.ownerId
         self.mineflayer_bot = None
         self.add_check(self.ready_check)
+
+    # default start method
+    async def setup_hook(self):
+        await init_redis()
 
     async def ready_check(self, ctx) -> bool:
         return self.is_ready() and self.mineflayer_bot.is_ready()
@@ -91,6 +96,9 @@ class DiscordBridgeBot(commands.Bot):
             print("Discord > Stopping Minecraft bot...")
             self.mineflayer_bot.stop(False)
             print("Discord > Minecraft bot has been stopped.")
+
+        await close_redis()
+
         await super().close()
 
     async def send_message(self, *args, **kwargs):

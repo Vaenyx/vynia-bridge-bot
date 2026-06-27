@@ -10,7 +10,7 @@ if not HYPIXEL_API_KEY:
 
 
 @redis_cache(ttl=3600)
-def hypixel_get(player: str) -> dict[str, Any]:
+async def hypixel_get(player: str) -> dict[str, Any]:
     response = requests.get(
         "https://api.hypixel.net/v2/player",
         headers={"API-Key": HYPIXEL_API_KEY},

@@ -170,7 +170,7 @@ async def level(ctx: CommandContext, message: str) -> Any:
     name = get_name(ctx, message)
 
     try:
-        data = hypixel_get(name)
+        data = await hypixel_get(name)
         player = data.get("player", {})
         display_name = player.get("displayname", name)
 
@@ -185,7 +185,7 @@ Example using the Urchin helper:
 from apis.urchin import urchin_get
 
 
-data = urchin_get("/player/tags", "keiyae")
+data = await urchin_get("/player/tags", "keiyae")
 ```
 
 The first argument is the Urchin endpoint.
@@ -222,7 +222,7 @@ if not EXAMPLE_API_KEY:
 
 
 @redis_cache(ttl=300)
-def example_get(player: str) -> dict[str, Any]:
+async def example_get(player: str) -> dict[str, Any]:
     response = requests.get(
         "https://api.example.com/player",
         headers={"X-API-Key": EXAMPLE_API_KEY},
@@ -244,7 +244,7 @@ Then use it in a command:
 from apis.example import example_get
 
 
-data = example_get("keiyae")
+data = await example_get("keiyae")
 ```
 
 ### 5.4 Caching API calls
@@ -256,7 +256,7 @@ from helpers.redis_cache import redis_cache
 
 
 @redis_cache(ttl=300)
-def example_get(player: str) -> dict[str, Any]:
+async def example_get(player: str) -> dict[str, Any]:
     ...
 ```
 
@@ -270,6 +270,7 @@ For example:
 ```
 
 This is useful for commands like stats commands, because repeated calls for the same player do not have to hit the API every time.
+Important: Since redis is asnyc all the functions using the cache decorator are turned into async functions (even if you define them as regular functions) so define them as such.
 
 ```txt
 REDIS_URL=redis://redis:6379

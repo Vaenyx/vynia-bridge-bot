@@ -16,7 +16,7 @@ URCHIN_HEADERS = {
 
 
 @redis_cache(ttl=300)
-def urchin_get(endpoint: str, player: str) -> dict[str, Any]:
+async def urchin_get(endpoint: str, player: str) -> dict[str, Any]:
     response = requests.get(
         f"{URCHIN_BASE_URL}{endpoint}",
         headers=URCHIN_HEADERS,

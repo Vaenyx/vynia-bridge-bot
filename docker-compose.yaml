@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       network: host
     restart: unless-stopped
-    container_name: hypixel-bridge-bot
+    container_name: vynia-bridge-bot
     volumes:
       - .minecraft:/root/.minecraft
     environment:
