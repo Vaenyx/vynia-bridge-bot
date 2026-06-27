@@ -37,9 +37,6 @@ class MinecraftBotManager:
         message = message.replace("/l", "/ l").replace("/L", "/ L")
         print(message)
         self.bot.chat(message)
-        # random message to prevent that error yk
-        for i in range(3):
-            self.bot.chat(f"\t {self.bot.username} {random_sequence(120)}")
 
     def stop(self, restart: bool = True):
         print("Minecraft > Stopping bot...")
