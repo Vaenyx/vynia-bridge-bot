@@ -92,13 +92,13 @@ async def bw(ctx: CommandContext, message: str) -> Any:
         tags_text = _format_tags(tag_data)
 
         return await ctx.reply(
-            f"{name.lower()} » "
-            f"{_fmt(stars)}✫ | "
-            f"FKDR {_fmt(fkdr)} | "
-            f"WLR {_fmt(wlr)} | "
-            f"BBLR {_fmt(bblr)} | "
-            f"KDR {_fmt(kdr)} | "
-            f"{games} games | "
+            f"{name.lower()} » \n"
+            f"{_fmt(stars)}✫ | \n"
+            f"FKDR {_fmt(fkdr)} | \n"
+            f"WLR {_fmt(wlr)} | \n"
+            f"BBLR {_fmt(bblr)} | \n"
+            f"KDR {_fmt(kdr)} | \n"
+            f"{games} games | \n"
             f"Tags: {tags_text}"
         )
     except Exception as e:

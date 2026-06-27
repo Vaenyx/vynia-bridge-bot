@@ -56,12 +56,12 @@ def _format_stats(title: str, player: str, stats: dict[str, Any]) -> str:
     stars_gained = stars_from_xp(xp_gained)
 
     return (
-        f"{player.lower()} ({title}) » "
-        f"+{_fmt(stars_gained)}✫ | "
-        f"FKDR {_fmt(fkdr)} | "
-        f"WLR {_fmt(wlr)} | "
-        f"BBLR {_fmt(bblr)} | "
-        f"KDR {_fmt(kdr)} | "
+        f"{player.lower()} ({title}) » \n"
+        f"+{_fmt(stars_gained)}✫ | \n"
+        f"FKDR {_fmt(fkdr)} | \n"
+        f"WLR {_fmt(wlr)} | \n"
+        f"BBLR {_fmt(bblr)} | \n"
+        f"KDR {_fmt(kdr)} | \n"
         f"{games} games"
     )
 
