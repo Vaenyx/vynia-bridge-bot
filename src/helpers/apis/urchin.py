@@ -2,6 +2,7 @@ from typing import Any
 import os
 import requests
 
+from helpers.redis_cache import redis_cache
 
 URCHIN_BASE_URL = "https://api.urchin.gg/v3"
 
@@ -14,6 +15,7 @@ URCHIN_HEADERS = {
 }
 
 
+@redis_cache(ttl=300)
 def urchin_get(endpoint: str, player: str) -> dict[str, Any]:
     response = requests.get(
         f"{URCHIN_BASE_URL}{endpoint}",

@@ -2,11 +2,14 @@ import os
 import requests
 from typing import Any
 
+from helpers.redis_cache import redis_cache
+
 HYPIXEL_API_KEY = os.getenv("HYPIXEL_API_KEY")
 if not HYPIXEL_API_KEY:
     raise RuntimeError("HYPIXEL_API_KEY was not provided")
 
 
+@redis_cache(ttl=3600)
 def hypixel_get(player: str) -> dict[str, Any]:
     response = requests.get(
         "https://api.hypixel.net/v2/player",
