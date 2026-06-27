@@ -1,6 +1,6 @@
 services:
   bridge-bot:
-    image: "hypixel-bridge-bot:latest"
+    image: "vynia-bridge-bot:latest"
     build:
       context: ./src/
       dockerfile: Dockerfile
