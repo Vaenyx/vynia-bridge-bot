@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any
 import os
 import requests
@@ -10,7 +12,7 @@ URCHIN_API_KEY = os.getenv("URCHIN_API_KEY")
 if not URCHIN_API_KEY:
     raise RuntimeError("URCHIN_API_KEY was not provided")
 
-URCHIN_HEADERS = {
+URCHIN_HEADERS: dict[str, str] = {
     "X-API-Key": URCHIN_API_KEY,
 }
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any
 
 from core.command_context import CommandContext, get_name
@@ -7,7 +9,7 @@ from helpers.hypixel import stars_from_xp
 from helpers.formatting import _fmt
 
 
-def _bw_stat(stats: dict[str, Any], key: str, default=0):
+def _bw_stat(stats: dict[str, Any], key: str, default: int = 0) -> int:
     return (
         stats.get("delta", {})
         .get("stats", {})
@@ -66,7 +68,7 @@ def _format_stats(title: str, player: str, stats: dict[str, Any]) -> str:
     )
 
 
-async def bw_daily(ctx: CommandContext, message: str) -> Any:
+async def bw_daily(ctx: CommandContext, message: str) -> object | None:
     name = get_name(ctx, message)
 
     try:
@@ -76,7 +78,7 @@ async def bw_daily(ctx: CommandContext, message: str) -> Any:
         return await ctx.reply(f"Error: {e}")
 
 
-async def bw_weekly(ctx: CommandContext, message: str) -> Any:
+async def bw_weekly(ctx: CommandContext, message: str) -> object | None:
     name = get_name(ctx, message)
 
     try:
@@ -86,7 +88,7 @@ async def bw_weekly(ctx: CommandContext, message: str) -> Any:
         return await ctx.reply(f"Error: {e}")
 
 
-async def bw_monthly(ctx: CommandContext, message: str) -> Any:
+async def bw_monthly(ctx: CommandContext, message: str) -> object | None:
     name = get_name(ctx, message)
 
     try:
@@ -96,7 +98,7 @@ async def bw_monthly(ctx: CommandContext, message: str) -> Any:
         return await ctx.reply(f"Error: {e}")
 
 
-async def bw_yearly(ctx: CommandContext, message: str) -> Any:
+async def bw_yearly(ctx: CommandContext, message: str) -> object | None:
     name = get_name(ctx, message)
 
     try:

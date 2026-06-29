@@ -1,4 +1,5 @@
-from typing import Any
+from __future__ import annotations
+
 import traceback
 
 import httpx
@@ -38,7 +39,7 @@ async def get_useless_fact() -> str | None:
         return None
 
 
-async def useless_fact(ctx: CommandContext, message: str) -> Any:
+async def useless_fact(ctx: CommandContext, message: str) -> object | None:
     fact = await get_useless_fact()
 
     if fact:

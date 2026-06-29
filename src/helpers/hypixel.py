@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 def stars_from_xp(xp: int) -> float:
     prestiges = xp // 487000
     xp %= 487000

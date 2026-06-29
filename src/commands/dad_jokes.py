@@ -1,4 +1,5 @@
-from typing import Any
+from __future__ import annotations
+
 
 from core.command_context import CommandContext
 
@@ -40,7 +41,7 @@ async def get_dad_joke() -> str | None:
         return None
 
 
-async def dad_joke(ctx: CommandContext, message: str) -> Any:
+async def dad_joke(ctx: CommandContext, message: str) -> object | None:
     joke = await get_dad_joke()
 
     if joke:

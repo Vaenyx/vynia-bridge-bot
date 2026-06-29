@@ -1,4 +1,5 @@
-from typing import Any
+from __future__ import annotations
+
 import traceback
 
 import httpx
@@ -36,7 +37,7 @@ async def get_chuck_norris_joke() -> str | None:
         return None
 
 
-async def chuck_norris(ctx: CommandContext, message: str) -> Any:
+async def chuck_norris(ctx: CommandContext, message: str) -> object | None:
     joke = await get_chuck_norris_joke()
 
     if joke:

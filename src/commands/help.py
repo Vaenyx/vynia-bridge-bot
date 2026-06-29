@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 from core.command_context import CommandContext
-from typing import Any
 
 
-async def help(ctx: CommandContext, message: str) -> Any:
+async def help(ctx: CommandContext, message: str) -> object | None:
     help_msg = (
         "Vynia Bridge Bot » \n"
         "Creator @perished_memories | \n"

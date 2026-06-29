@@ -1,22 +1,25 @@
+from __future__ import annotations
+
 from collections.abc import Awaitable, Callable
+from typing import Any, TYPE_CHECKING
 
-from commands.help import help
+from commands.bedwars.bedwars_all_time import bw, tags
+from commands.bedwars.bedwars_period import bw_daily, bw_monthly, bw_weekly, bw_yearly
+from commands.bored import bored_activity
+from commands.chuck_norris import chuck_norris
 from commands.commands import commands
-
+from commands.dad_jokes import dad_joke
+from commands.fact import useless_fact
+from commands.help import help
+from commands.joke import joke
 from commands.meow import meow
 from commands.mirror import mirror
 from commands.rickroll import rickroll
-from commands.dad_jokes import dad_joke
-from commands.joke import joke
-from commands.chuck_norris import chuck_norris
-from commands.fact import useless_fact
-from commands.bored import bored_activity
 
-from commands.bedwars.bedwars_all_time import bw, tags
-from commands.bedwars.bedwars_period import bw_daily, bw_weekly, bw_monthly, bw_yearly
+if TYPE_CHECKING:
+    from core.command_context import CommandContext
 
-
-CommandFn = Callable[["CommandContext", str], Awaitable[None]]
+CommandFn = Callable[["CommandContext", str], Awaitable[Any]]
 
 COMMANDS: dict[str, CommandFn] = {
     "help": help,

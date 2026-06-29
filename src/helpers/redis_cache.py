@@ -1,17 +1,17 @@
+from __future__ import annotations
+
 import functools
 import hashlib
 import inspect
 import json
 import os
 from collections.abc import Awaitable, Callable
-from typing import Any, ParamSpec, TypeVar, cast
+from typing import Any, ParamSpec
 
 from redis.asyncio import Redis
 from redis.exceptions import RedisError
 
 P = ParamSpec("P")
-T = TypeVar("T")
-
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 
 redis = Redis.from_url(
@@ -60,12 +60,12 @@ def _make_cache_key(
 
 def redis_cache(
     ttl: int = 60,
-) -> Callable[[Callable[P, T] | Callable[P, Awaitable[T]]], Callable[P, Awaitable[T]]]:
+) -> Callable[[Callable[P, Any]], Callable[P, Awaitable[Any]]]:
     def decorator(
-        func: Callable[P, T] | Callable[P, Awaitable[T]],
-    ) -> Callable[P, Awaitable[T]]:
+        func: Callable[P, Any],
+    ) -> Callable[P, Awaitable[Any]]:
         @functools.wraps(func)
-        async def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
+        async def wrapper(*args: P.args, **kwargs: P.kwargs) -> Any:
             cache_key = _make_cache_key(func, args, kwargs)
 
             try:
@@ -73,14 +73,14 @@ def redis_cache(
 
                 if cached is not None:
                     print(f"Redis cache HIT: {func.__name__}")
-                    return cast(T, json.loads(cached))
+                    return json.loads(cached)
 
             except (RedisError, json.JSONDecodeError) as e:
                 print(f"Redis cache read failed for {func.__name__}: {e}")
 
             print(f"Redis cache MISS: {func.__name__}")
 
-            result = func(*args, **kwargs)
+            result: Any = func(*args, **kwargs)
 
             if inspect.isawaitable(result):
                 result = await result
@@ -95,7 +95,7 @@ def redis_cache(
             except (RedisError, TypeError) as e:
                 print(f"Redis cache write failed for {func.__name__}: {e}")
 
-            return cast(T, result)
+            return result
 
         return wrapper
 

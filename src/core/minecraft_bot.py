@@ -1,44 +1,57 @@
-from core.config import AccountConfig, ServerConfig
+from __future__ import annotations
+
 import asyncio
 import json
+import re
 import time
 import traceback
-import javascript
-import re
+from typing import Any, TYPE_CHECKING, TypedDict
 
-from core.commands_handler import handle_command
+import javascript
+
 from core.command_context import CommandContext
-from helpers.random_sequence import random_sequence
+from core.commands_handler import handle_command
+from core.config import AccountConfig, ServerConfig
+
+if TYPE_CHECKING:
+    from concurrent.futures import Future
+
+    from core.discord_bot import DiscordBridgeBot
 
 rank_regex = re.compile(r"^\[[^\]]+\]\s*")
 
 
+class MessageBlock(TypedDict):
+    started: float
+    lines: list[str]
+
+
 class MinecraftBotManager:
-    def __init__(self, client, bot):
+    def __init__(self, client: DiscordBridgeBot, bot: Any) -> None:
         self.client = client
         self.bot = bot
 
-        self._message_block = None
+        self._message_block: MessageBlock | None = None
         self.auto_restart = True
 
         self._online = False
         self._starting = False
 
-    def is_ready(self):
+    def is_ready(self) -> bool:
         return self._online and not self._starting
 
-    def is_online(self):
+    def is_online(self) -> bool:
         return self._online
 
-    def is_starting(self):
+    def is_starting(self) -> bool:
         return self._starting
 
-    async def chat(self, message):
+    async def chat(self, message: str) -> None:
         message = message.replace("/l", "/ l").replace("/L", "/ L")
         print(message)
         self.bot.chat(message)
 
-    def stop(self, restart: bool = True):
+    def stop(self, restart: bool = True) -> None:
         print("Minecraft > Stopping bot...")
 
         self._starting = restart
@@ -62,25 +75,29 @@ class MinecraftBotManager:
             traceback.print_exc()
             raise
 
-    def send_to_discord(self, message: str):
+    def send_to_discord(self, message: str) -> None:
         asyncio.run_coroutine_threadsafe(
             self.client.send_discord_message(message),
             self.client.loop,
         )
 
-    def _clear_message_block(self):
+    def _clear_message_block(self) -> None:
         self._message_block = None
 
-    def _start_message_block(self):
+    def _start_message_block(self) -> None:
         self._message_block = {
             "started": time.monotonic(),
             "lines": [],
         }
 
-    def _append_message_block(self, message: str):
-        self._message_block["lines"].append(message)
+    def _append_message_block(self, message: str) -> None:
+        if self._message_block is not None:
+            self._message_block["lines"].append(message)
 
-    def _flush_message_block(self):
+    def _flush_message_block(self) -> None:
+        if self._message_block is None:
+            return
+
         self.send_to_discord("\n".join(self._message_block["lines"]))
         self._clear_message_block()
 
@@ -90,9 +107,9 @@ class MinecraftBotManager:
             and time.monotonic() - self._message_block["started"] > 10
         )
 
-    def oncommands(self):
+    def oncommands(self) -> None:
         @javascript.On(self.bot, "spawn")
-        def login():
+        def login() -> None:
             if not self._online:
                 print("Minecraft > Bot is logged in as", self.bot.username)
 
@@ -104,7 +121,7 @@ class MinecraftBotManager:
             self.bot.chat("/limbo")
 
         @javascript.On(self.bot, "end")
-        def end(reason):
+        def end(reason: Any) -> None:
             time.sleep(3)
 
             print(f"Minecraft > Bot offline: {reason}")
@@ -114,7 +131,7 @@ class MinecraftBotManager:
             self.stop(self.auto_restart)
 
         @javascript.On(self.bot, "kicked")
-        def kicked(reason, loggedIn):
+        def kicked(reason: Any, loggedIn: bool) -> None:
             if isinstance(reason, str):
                 try:
                     reason = json.loads(reason)
@@ -137,23 +154,20 @@ class MinecraftBotManager:
                 self.send_to_discord("Bot kicked from the server.")
                 self.stop(True)
             else:
-                self.send_to_discord(
-                    "Bot kicked before logging in to the server.")
+                self.send_to_discord("Bot kicked before logging in to the server.")
                 self.stop(False)
 
         @javascript.On(self.bot, "error")
-        def error(reason):
+        def error(reason: Any) -> None:
             print(reason)
             self.client.dispatch("minecraft_error")
 
         @javascript.On(self.bot, "messagestr")
-        def chat(message, _, raw_message, *args):
+        def chat(message: str, _: Any, raw_message: Any, *args: Any) -> None:
             prefix = "Guild > "
 
             if message.startswith(prefix):
-
-                sender, _, content = message.removeprefix(
-                    prefix).partition(": ")
+                sender, _, content = message.removeprefix(prefix).partition(": ")
 
                 sender = rank_regex.sub("", sender, count=1)
                 username = sender.strip()
@@ -161,7 +175,7 @@ class MinecraftBotManager:
                 if username == self.bot.username:
                     return
 
-                async def reply(text: str):
+                async def reply(text: str) -> None:
                     await self.chat(f"/t {username} {text}"[:256])
 
                 ctx = CommandContext(
@@ -169,10 +183,10 @@ class MinecraftBotManager:
                     platform="minecraft",
                     reply=reply,
                     discord=self.client,
-                    minecraft=self
+                    minecraft=self,
                 )
 
-                future = asyncio.run_coroutine_threadsafe(
+                future: Future[bool] = asyncio.run_coroutine_threadsafe(
                     handle_command(ctx, content),
                     self.client.loop,
                 )
@@ -185,38 +199,31 @@ class MinecraftBotManager:
             if self._message_block_expired():
                 self._clear_message_block()
 
-            if self._message_block:
-                if (
-                    message.startswith("----------")
-                    or message.endswith("----------")
-                ):
+            if self._message_block is not None:
+                if message.startswith("----------") or message.endswith("----------"):
                     self._flush_message_block()
                     return
 
                 self._append_message_block(message)
                 return
 
-            if (
-                message.startswith("-----")
-                and message.endswith("-----")
-            ):
+            if message.startswith("-----") and message.endswith("-----"):
                 self._start_message_block()
                 return
 
             self.send_to_discord(message)
 
-    def send_minecraft_message(self, discord, message):
-        message_text = f"/gc {discord}: {message}"
+    def send_minecraft_message(self, discord_username: str, message: str) -> None:
+        message_text = f"/gc {discord_username}: {message}"
         message_text = message_text[:256]
         self.bot.chat(message_text)
 
-    def send_minecraft_command(self, message):
+    def send_minecraft_command(self, message: str) -> None:
         message = message.replace("!o ", "/")
         self.bot.chat(message)
 
-    # add types
     @classmethod
-    def createbot(cls, client):
+    def createbot(cls, client: DiscordBridgeBot) -> MinecraftBotManager:
         javascript.init()
 
         mineflayer = javascript.require("mineflayer")

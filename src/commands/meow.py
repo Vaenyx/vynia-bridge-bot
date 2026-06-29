@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from core.command_context import CommandContext
-from typing import Any
 import random
 
 MEOWS = [
@@ -502,6 +503,6 @@ MEOWS = [
 ]
 
 
-async def meow(ctx: CommandContext, message: str) -> Any:
+async def meow(ctx: CommandContext, message: str) -> object | None:
     meow = random.choice(MEOWS)
     return await ctx.reply(meow)

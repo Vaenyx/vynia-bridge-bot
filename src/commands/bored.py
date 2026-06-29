@@ -1,4 +1,5 @@
-from typing import Any
+from __future__ import annotations
+
 import traceback
 
 import httpx
@@ -36,7 +37,7 @@ async def get_bored_activity() -> str | None:
         return None
 
 
-async def bored_activity(ctx: CommandContext, message: str) -> Any:
+async def bored_activity(ctx: CommandContext, message: str) -> object | None:
     activity = await get_bored_activity()
 
     if activity:

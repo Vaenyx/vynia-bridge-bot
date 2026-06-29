@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any
 
 from core.command_context import CommandContext, get_name
@@ -39,7 +41,7 @@ def _format_tags(data: dict[str, Any]) -> str:
     return " | ".join(formatted)
 
 
-async def tags(ctx: CommandContext, message: str) -> Any:
+async def tags(ctx: CommandContext, message: str) -> object | None:
     name = get_name(ctx, message)
 
     try:
@@ -54,7 +56,7 @@ async def tags(ctx: CommandContext, message: str) -> Any:
         return await ctx.reply(f"Error: {e}")
 
 
-async def bw(ctx: CommandContext, message: str) -> Any:
+async def bw(ctx: CommandContext, message: str) -> object | None:
     name = get_name(ctx, message)
 
     try:

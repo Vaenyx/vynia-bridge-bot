@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import re
 
-BAD_WORDS = [
+BAD_WORDS: list[str] = [
     # Profanity
     "fuck", "fucking", "fucker", "motherfucker",
     "shit", "shitty",
@@ -81,7 +83,7 @@ def _make_pattern(word: str) -> str:
     return r"[\W_]*".join(map(re.escape, word))
 
 
-pattern = re.compile(
+pattern: re.Pattern[str] = re.compile(
     r"\b(?:"
     + "|".join(_make_pattern(word) for word in BAD_WORDS)
     + r")\b",
