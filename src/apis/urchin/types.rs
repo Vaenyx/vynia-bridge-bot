@@ -15,15 +15,6 @@ pub enum Period {
 }
 
 impl Period {
-    pub fn as_str(&self) -> &'static str {
-        match self {
-            Period::Daily => "daily",
-            Period::Weekly => "weekly",
-            Period::Monthly => "monthly",
-            Period::Yearly => "yearly",
-        }
-    }
-
     pub fn label(&self) -> &'static str {
         match self {
             Period::Daily => "Daily",
