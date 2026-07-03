@@ -5,19 +5,29 @@ mod commands;
 mod config;
 mod discord;
 mod error;
+mod minecraft;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     dotenvy::dotenv().ok();
 
-    tracing_subscriber::fmt::init();
-
     let config = config::Config::from_env()?;
+
     let urchin_api = apis::urchin::UrchinApi::new(config.urchin.clone());
 
-    discord::client::start_discord_bot(config.discord, urchin_api)
-        .await
-        .expect("Discord bot crashed at startup");
+    let discord_task = discord::client::start_discord_bot(config.discord, urchin_api);
 
-    return Ok(());
+    //let minecraft_task = minecraft::client::start_minecraft_client(config.minecraft);
+
+    tokio::select! {
+        discord_result = discord_task => {
+            discord_result?;
+        }
+
+        //minecraft_exit = minecraft_task => {
+        //    println!("Minecraft client exited: {:?}", minecraft_exit);
+        //}
+    }
+
+    Ok(())
 }
