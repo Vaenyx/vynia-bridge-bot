@@ -3,7 +3,7 @@ use serde::Deserialize;
 #[derive(Debug, Clone, Deserialize)]
 pub struct Config {
     pub discord: DiscordConfig,
-    pub minecraft: MinecraftConfig,
+    //pub minecraft: MinecraftConfig,
     //pub hypixel: HypixelConfig,
     //pub redis: RedisConfig,
     //pub commands: CommandConfig,
@@ -54,7 +54,7 @@ impl Config {
 
         Ok(Self {
             discord: envy::prefixed("DISCORD_").from_env()?,
-            minecraft: envy::prefixed("MINECRAFT_").from_env()?,
+            //minecraft: envy::prefixed("MINECRAFT_").from_env()?,
             //hypixel: envy::prefixed("HYPIXEL_").from_env()?,
             //redis: envy::prefixed("REDIS_").from_env()?,
             //commands: envy::prefixed("COMMAND_").from_env()?,

@@ -5,7 +5,6 @@ mod commands;
 mod config;
 mod discord;
 mod error;
-mod minecraft;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -29,5 +28,5 @@ async fn main() -> Result<()> {
         //}
     }
 
-    Ok(())
+    return Ok(());
 }
