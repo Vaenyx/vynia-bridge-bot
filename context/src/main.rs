@@ -16,16 +16,11 @@ async fn main() -> Result<()> {
 
     let discord_task = discord::client::start_discord_bot(config.discord, urchin_api);
 
-    //let minecraft_task = minecraft::client::start_minecraft_client(config.minecraft);
-
+    // add new tasks for mc and such
     tokio::select! {
         discord_result = discord_task => {
             discord_result?;
         }
-
-        //minecraft_exit = minecraft_task => {
-        //    println!("Minecraft client exited: {:?}", minecraft_exit);
-        //}
     }
 
     return Ok(());

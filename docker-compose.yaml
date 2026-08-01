@@ -1,0 +1,13 @@
+services:
+  vynia-discord-bot:
+    container_name: vynia-discord-bot
+
+    build:
+      context: context
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+
+    environment:
+      DISCORD_TOKEN: ${DISCORD_TOKEN:?DISCORD_TOKEN is required}
+      URCHIN_API_KEY: ${URCHIN_API_KEY:?URCHIN_API_KEY is required}

@@ -6,7 +6,6 @@ use crate::discord::{Data, Error, commands};
 
 pub async fn start_discord_bot(config: DiscordConfig, urchin_api: UrchinApi) -> Result<(), Error> {
     let token = config.token;
-    let guild_id = config.guild_id;
 
     let options = poise::FrameworkOptions {
         commands: vec![
@@ -25,11 +24,10 @@ pub async fn start_discord_bot(config: DiscordConfig, urchin_api: UrchinApi) -> 
         .setup(move |ctx, _ready, framework| {
             let urchin_api = urchin_api.clone();
 
-            Box::pin(async move {
-                poise::builtins::register_in_guild(
+                Box::pin(async move {
+                poise::builtins::register_globally(
                     ctx,
                     &framework.options().commands,
-                    serenity::GuildId::new(guild_id),
                 )
                 .await?;
 
